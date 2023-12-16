@@ -1,17 +1,34 @@
-
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
-import App from './App';
+import {createBrowserRouter, RouterProvider, Outlet} from "react-router-dom"
 import './index.css';
-import configureStore from './store';
+import MainPage from "./components/MainPage";
+import { AuthRoute } from './components/Routes/Routes';
 
-const store = configureStore();
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>
-);
+const Layout = () => {
+  return (
+    <>
+      <Outlet/>
+    </>
+  )
+}
+
+const router = createBrowserRouter([
+  {
+    element: <Layout/>,
+    children: [
+      {
+        path: "/",
+        element: <AuthRoute component={MainPage}/>
+      }
+    ]
+  }
+])
+
+
+const App = () => {
+  return (
+    <RouterProvider router={router}/>
+  )
+}
+
+export default App
