@@ -77,7 +77,7 @@ router.get("/current", restoreUser, (req, res) => {
 
   if (!req.user) return res.json(null);
   res.json({
-    _id: req.user._id,
+    id: req.user._id,
     username: req.user.username,
     email: req.user.email
   })

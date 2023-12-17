@@ -42,7 +42,8 @@ const startSession = (userInfo, route) => async dispatch => {
     localStorage.setItem("jwtToken", data.token)
     dispatch (receiveCurrentUser(data.user))
   } else {
-    data = res.json();
+    data = await res.json();
+    console.log(data)
     if (data.statusCode === 400) {
       return dispatch(receiveErrors(data.errors))
     }
@@ -54,22 +55,32 @@ export const logout = () => dispatch => {
   dispatch(logoutUser());
 }
 
+export const getCurrentUser = () => async dispatch => {
+  const res = await jwtFetch('/api/users/current');
+  const user = await res.json();
+  return dispatch(receiveCurrentUser(user));
+};
+
 const initialState = {
   user: undefined
 }
 
 const sessionReducer = (state = initialState, action) => {
+  const newState = Object.assign({}, state)
+
   switch (action.type) {
     case RECEIVE_CURRENT_USER:
-      return { user: action.currentUser}
+      newState.user = action.currentUser
+      return newState
     case RECEIVE_USER_LOGOUT:
-      return initialState
+      newState.user = null
+      return newState
     default:
       return state
   }
 }
 
-const nullErrors = null;
+const nullErrors = null
 
 export const sessionErrorsReducer = (state = nullErrors, action) => {
   switch(action.type) {

@@ -1,5 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import MainPage from '../MainPage';
 
 export const AuthRoute = ({ component: Component, ...props }) => {
   const loggedIn = useSelector(state => !!state.session.user);
@@ -7,7 +8,7 @@ export const AuthRoute = ({ component: Component, ...props }) => {
   return (
     !loggedIn ?
       <Component {...props} /> :
-      <Navigate to="/tweets" replace={true} />
+      <MainPage/>
   );
 };
 
